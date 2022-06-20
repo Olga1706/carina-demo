@@ -15,26 +15,23 @@
  */
 package com.qaprosoft.carina.demo;
 
+import java.lang.invoke.MethodHandles;
+
+import com.qaprosoft.carina.demo.api.PostExistUserMethod;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.Test;
+
 import com.qaprosoft.apitools.validation.JsonCompareKeywords;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
-import com.qaprosoft.carina.core.foundation.api.APIMethodPoller;
 import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
 import com.qaprosoft.carina.core.foundation.utils.tag.Priority;
 import com.qaprosoft.carina.core.foundation.utils.tag.TestPriority;
 import com.qaprosoft.carina.demo.api.DeleteUserMethod;
 import com.qaprosoft.carina.demo.api.GetUserMethods;
-import com.qaprosoft.carina.demo.api.PostExistUserMethod;
 import com.qaprosoft.carina.demo.api.PostUserMethod;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
-
-import java.lang.invoke.MethodHandles;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * This sample shows how create REST API tests.
  *
@@ -50,28 +47,19 @@ public class APISampleTest implements IAbstractTest {
         LOGGER.info("test");
         setCases("4555,54545");
         PostUserMethod api = new PostUserMethod();
-        api.setProperties("api/users/user.properties");
-
-        AtomicInteger counter = new AtomicInteger(0);
-
-        api.callAPIWithRetry()
-                .withLogStrategy(APIMethodPoller.LogStrategy.ALL)
-                .peek(rs -> counter.getAndIncrement())
-                .until(rs -> counter.get() == 4)
-                .pollEvery(1, ChronoUnit.SECONDS)
-                .stopAfter(10, ChronoUnit.SECONDS)
-                .execute();
+        api.expectResponseStatus(HttpResponseStatusType.CREATED_201);
+        api.callAPI();
         api.validateResponse();
     }
 
-    @Test()
+    @org.junit.Test()
     @MethodOwner(owner = "qpsdemo")
     public void testCreateUserMissingSomeFields() throws Exception {
         PostUserMethod api = new PostUserMethod();
-        api.setProperties("api/users/user.properties");
         api.getProperties().remove("name");
         api.getProperties().remove("username");
-        api.callAPIExpectSuccess();
+        api.expectResponseStatus(HttpResponseStatusType.CREATED_201);
+        api.callAPI();
         api.validateResponse();
     }
 
@@ -79,7 +67,8 @@ public class APISampleTest implements IAbstractTest {
     @MethodOwner(owner = "qpsdemo")
     public void testGetUsers() {
         GetUserMethods getUsersMethods = new GetUserMethods();
-        getUsersMethods.callAPIExpectSuccess();
+        getUsersMethods.expectResponseStatus(HttpResponseStatusType.OK_200);
+        getUsersMethods.callAPI();
         getUsersMethods.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
         getUsersMethods.validateResponseAgainstSchema("api/users/_get/rs.schema");
     }
@@ -93,7 +82,6 @@ public class APISampleTest implements IAbstractTest {
         deleteUserMethod.callAPI();
         deleteUserMethod.validateResponse();
     }
-
 
     @Test()
     @MethodOwner(owner = "qpsdemo")
