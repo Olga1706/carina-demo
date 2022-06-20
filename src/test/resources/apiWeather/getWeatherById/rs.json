@@ -1,0 +1,44 @@
+{
+  "coord": {
+    "lon": "regex:[\\d\\_\\.]+",
+    "lat": "regex:[\\d\\_\\.]+"
+  },
+  "weather": [
+    {
+      "id": "regex:[\\d\\_\\.]+",
+      "main": "type:String",
+      "description": "type:String",
+      "icon": "type:String"
+    }
+  ],
+  "base": "type:String",
+  "main": {
+    "temp": "regex:[\\d\\_\\.]+",
+    "feels_like": "regex:[\\d\\_\\.]+",
+    "temp_min": "regex:[\\d\\_\\.]+",
+    "temp_max": "regex:[\\d\\_\\.]+",
+    "pressure": "regex:[\\d\\_\\.]+",
+    "humidity": "regex:[\\d\\_\\.]+"
+  },
+  "visibility": "regex:[\\d\\_\\.]+",
+  "wind": {
+    "speed": "regex:[\\d\\_\\.]+",
+    "deg": "regex:[\\d\\_\\.]+",
+    "gust": "regex:[\\d\\_\\.]+"
+  },
+  "clouds": {
+    "all": "regex:[\\d\\_\\.]+"
+  },
+  "dt": "regex:[\\d\\_\\.]+",
+  "sys": {
+    "type": "regex:[\\d\\_\\.]+",
+    "id": "regex:[\\d\\_\\.]+",
+    "country": "UA",
+    "sunrise": "regex:[\\d\\_\\.]+",
+    "sunset": "regex:[\\d\\_\\.]+"
+  },
+  "timezone": "regex:[\\d\\_\\.]+",
+  "id": "regex:[\\d\\_\\.]+",
+  "name": "Kyiv",
+  "cod": "regex:[\\d\\_\\.]+"
+}

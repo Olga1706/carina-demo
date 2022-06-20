@@ -18,11 +18,13 @@ package com.qaprosoft.carina.demo;
 import com.qaprosoft.apitools.validation.JsonCompareKeywords;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.api.APIMethodPoller;
+import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
 import com.qaprosoft.carina.core.foundation.utils.tag.Priority;
 import com.qaprosoft.carina.core.foundation.utils.tag.TestPriority;
 import com.qaprosoft.carina.demo.api.DeleteUserMethod;
 import com.qaprosoft.carina.demo.api.GetUserMethods;
+import com.qaprosoft.carina.demo.api.PostExistUserMethod;
 import com.qaprosoft.carina.demo.api.PostUserMethod;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.slf4j.Logger;
@@ -87,8 +89,20 @@ public class APISampleTest implements IAbstractTest {
     @TestPriority(Priority.P1)
     public void testDeleteUsers() {
         DeleteUserMethod deleteUserMethod = new DeleteUserMethod();
-        deleteUserMethod.setProperties("api/users/user.properties");
-        deleteUserMethod.callAPIExpectSuccess();
+        deleteUserMethod.expectResponseStatus(HttpResponseStatusType.OK_200);
+        deleteUserMethod.callAPI();
         deleteUserMethod.validateResponse();
+    }
+
+
+    @Test()
+    @MethodOwner(owner = "qpsdemo")
+    public void testCreateExistUser() throws Exception {
+        LOGGER.info("test");
+        setCases("4555,54545");
+        PostExistUserMethod api = new PostExistUserMethod();
+        api.expectResponseStatus(HttpResponseStatusType.CREATED_201);
+        api.callAPI();
+        api.validateResponse();
     }
 }
