@@ -1,0 +1,6 @@
+{
+  "name": "type:String",
+  "job": "type:String",
+  "id": "type:String",
+  "createdAt": "type:String"
+}

@@ -16,22 +16,22 @@
 package com.qaprosoft.carina.demo;
 
 import java.lang.invoke.MethodHandles;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.qaprosoft.carina.demo.api.PostExistUserMethod;
-import org.skyscreamer.jsonassert.JSONCompareMode;
+import com.qaprosoft.carina.core.foundation.api.APIMethodPoller;
+import com.qaprosoft.carina.demo.api.myApi.DeleteUser;
+import com.qaprosoft.carina.demo.api.myApi.PostExistUserMethod;
+import com.qaprosoft.carina.demo.api.myApi.PostCreateUser;
+import com.qaprosoft.carina.demo.api.myApi.PutUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import com.qaprosoft.apitools.validation.JsonCompareKeywords;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
 import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
-import com.qaprosoft.carina.core.foundation.utils.tag.Priority;
-import com.qaprosoft.carina.core.foundation.utils.tag.TestPriority;
-import com.qaprosoft.carina.demo.api.DeleteUserMethod;
-import com.qaprosoft.carina.demo.api.GetUserMethods;
-import com.qaprosoft.carina.demo.api.PostUserMethod;
+
 /**
  * This sample shows how create REST API tests.
  *
@@ -41,7 +41,7 @@ public class APISampleTest implements IAbstractTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Test()
+/*    @Test()
     @MethodOwner(owner = "qpsdemo")
     public void testCreateUser() throws Exception {
         LOGGER.info("test");
@@ -81,7 +81,7 @@ public class APISampleTest implements IAbstractTest {
         deleteUserMethod.expectResponseStatus(HttpResponseStatusType.OK_200);
         deleteUserMethod.callAPI();
         deleteUserMethod.validateResponse();
-    }
+    }*/
 
     @Test()
     @MethodOwner(owner = "qpsdemo")
@@ -92,5 +92,51 @@ public class APISampleTest implements IAbstractTest {
         api.expectResponseStatus(HttpResponseStatusType.CREATED_201);
         api.callAPI();
         api.validateResponse();
+    }
+
+    @Test()
+    @MethodOwner(owner = "ol")
+    public void testCreateUser() throws Exception {
+        LOGGER.info("test");
+        setCases("4555,54545");
+        PostCreateUser api = new PostCreateUser();
+        AtomicInteger counter = new AtomicInteger(0);
+
+        api.callAPIWithRetry()
+                .withLogStrategy(APIMethodPoller.LogStrategy.ALL)
+                .peek(rs -> counter.getAndIncrement())
+                .until(rs -> counter.get() == 4)
+                .pollEvery(1, ChronoUnit.SECONDS)
+                .stopAfter(10, ChronoUnit.SECONDS)
+                .execute();
+        api.validateResponse();
+    }
+
+    @Test()
+    @MethodOwner(owner = "ol")
+    public void testPutUser() throws Exception {
+        LOGGER.info("test");
+        setCases("4555,54545");
+        PutUser api = new PutUser();
+
+        AtomicInteger counter = new AtomicInteger(0);
+        api.callAPIWithRetry()
+                .withLogStrategy(APIMethodPoller.LogStrategy.ALL)
+                .peek(rs -> counter.getAndIncrement())
+                .until(rs -> counter.get() == 4)
+                .pollEvery(1, ChronoUnit.SECONDS)
+                .stopAfter(10, ChronoUnit.SECONDS)
+                .execute();
+        api.validateResponse();
+    }
+
+    @Test()
+    @MethodOwner(owner = "ol")
+    public void testDeleteUsers() {
+        DeleteUser deleteUser = new DeleteUser();
+        deleteUser.expectResponseStatus(HttpResponseStatusType.NO_CONTENT_204);
+        deleteUser.callAPI();
+        // deleteUser.validateResponse();
+
     }
 }

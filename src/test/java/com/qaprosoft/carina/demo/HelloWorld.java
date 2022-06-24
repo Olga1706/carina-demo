@@ -19,6 +19,7 @@ import java.lang.invoke.MethodHandles;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
@@ -37,4 +38,5 @@ public class HelloWorld implements IAbstractTest {
     public void helloWorld() {
         LOGGER.info("Hello World!");
     }
+
 }
