@@ -173,17 +173,5 @@ public class TestWeb implements IAbstractTest {
         Assert.assertEquals(inventoryPage.selectOption(), "Price (low to high)", "Option doesn't selected");
     }
 
-    @Test
-    @MethodOwner(owner = "olga")
-    public void testSortByAlphabetical() {
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened!");
-        homePage.typeUsername(userNameValid);
-        homePage.typePassword(passwordValid);
-        inventoryPage = homePage.clickLoginBtn();
-        Assert.assertTrue(inventoryPage.checkSortProductsAToZ(), "The array is not sorted correctly.");
-        Assert.assertTrue(inventoryPage.clickSortZToA(), "(Z-A) filter isn`t present");
-        Assert.assertTrue(inventoryPage.checkSortProductsZToA(), "The array is not sorted correctly.");
-    }
 
 }
