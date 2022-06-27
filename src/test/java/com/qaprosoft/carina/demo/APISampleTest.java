@@ -20,10 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.qaprosoft.carina.core.foundation.api.APIMethodPoller;
-import com.qaprosoft.carina.demo.api.myApi.DeleteUser;
-import com.qaprosoft.carina.demo.api.myApi.PostExistUserMethod;
-import com.qaprosoft.carina.demo.api.myApi.PostCreateUser;
-import com.qaprosoft.carina.demo.api.myApi.PutUser;
+import com.qaprosoft.carina.demo.api.myApi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -132,11 +129,29 @@ public class APISampleTest implements IAbstractTest {
 
     @Test()
     @MethodOwner(owner = "ol")
+    public void testPatchPost() throws Exception {
+        LOGGER.info("test");
+        setCases("4555,54545");
+        PatchPost api = new PatchPost();
+
+        AtomicInteger counter = new AtomicInteger(0);
+        api.callAPIWithRetry()
+                .withLogStrategy(APIMethodPoller.LogStrategy.ALL)
+                .peek(rs -> counter.getAndIncrement())
+                .until(rs -> counter.get() == 4)
+                .pollEvery(1, ChronoUnit.SECONDS)
+                .stopAfter(10, ChronoUnit.SECONDS)
+                .execute();
+        api.validateResponse();
+    }
+
+    @Test()
+    @MethodOwner(owner = "ol")
     public void testDeleteUsers() {
         DeleteUser deleteUser = new DeleteUser();
-        deleteUser.expectResponseStatus(HttpResponseStatusType.NO_CONTENT_204);
+        deleteUser.expectResponseStatus(HttpResponseStatusType.OK_200);
         deleteUser.callAPI();
-        // deleteUser.validateResponse();
-
+        deleteUser.validateResponse();
     }
+
 }

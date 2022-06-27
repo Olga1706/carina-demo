@@ -19,14 +19,19 @@ public class InventoryPage extends AbstractPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @FindBy(className = "shopping_cart_link")
+    @FindBy(id = "shopping_cart_container")
     private ExtendedWebElement cart;
 
     @FindBy(xpath = "//*[@id='header_container']/div[2]/div[2]/span/span")
-    private ExtendedWebElement defaultDropdown;
+    private ExtendedWebElement activeDropdown;
 
-    @FindBy(xpath = "//*[@class=product_sort_container]/option[text()='%s']")
+    @FindBy(xpath = "//option[@value='%s']")
     private ExtendedWebElement dropDownOption;
+
+
+    @FindBy(xpath = "//*[@class=select_container]/option[text()='%s']")
+    private ExtendedWebElement dropDownMenu;
+    //select[@class='product_sort_container']
 
     @FindBy(className = "inventory_item_img")
     private ExtendedWebElement itemImage;
@@ -55,15 +60,6 @@ public class InventoryPage extends AbstractPage {
     @FindBy(xpath = "//*[@id='header_container']/div[2]/div[2]/span/select/option[4]")
     private ExtendedWebElement optionPriceHighToLow;
 
-    @FindBy(xpath = "//div[@class='inventory_item_name']")
-    private List<ExtendedWebElement> prodNames;
-
-    @FindBy(xpath = "//option[@value='za']")
-    private ExtendedWebElement prodSortZToA;
-
-    @FindBy(xpath = "//span[text()='Name (Z to A)']")
-    private ExtendedWebElement activeOptionSortZToA;
-
     public InventoryPage(WebDriver driver) {
         super(driver);
         setPageURL("/inventory.html");
@@ -73,20 +69,23 @@ public class InventoryPage extends AbstractPage {
         return cart.isElementPresent();
     }
 
-    public String defaultDropdownName() {
-        return defaultDropdown.getText();
+    public String getActiveDropdownName() {
+        return activeDropdown.getText();
     }
 
-    public boolean isDropdownOptionByNamePresent(String option) {
-        return dropDownOption.format(option).isElementPresent();
+   public String isDropdownOptionByNamePresent(String option) {
+        return dropDownMenu.format(option).getText();
     }
 
-    public boolean clickOnDropdown() {
+    public InventoryPage clickOnDropdownMenu() {
+        dropDownMenu.click(5);
+        return new InventoryPage(getDriver());
+    }
+   public void clickOnDropdown() {
         optionPriceLowToHigh.click();
-        return false;
     }
 
-    public String selectOption() {
+    public String getSelectOption() {
         return optionPriceLowToHigh.getText();
     }
 
@@ -94,7 +93,7 @@ public class InventoryPage extends AbstractPage {
         return itemImage.isElementPresent();
     }
 
-    public String inventoryItemName() {
+    public String getInventoryItemName() {
         return inventoryItemName.getText();
     }
 
@@ -102,7 +101,7 @@ public class InventoryPage extends AbstractPage {
         return inventoryItemDesc.isElementPresent();
     }
 
-    public String inventoryItemPrice() {
+    public String getInventoryItemPrice() {
         return inventoryItemPrice.getText();
     }
 
@@ -110,20 +109,20 @@ public class InventoryPage extends AbstractPage {
         return addToCart.isElementPresent();
     }
 
-    public boolean filterNameAToZPresent() {
-        return optionNameAToZ.isElementPresent();
+    public String isFilterNameAToZPresent() {
+       return optionNameAToZ.getText();
     }
 
-    public boolean filterNameZToAPresent() {
-        return optionNameZToA.isElementPresent();
+    public String isFilterNameZToAPresent() {
+        return optionNameZToA.getText();
     }
 
-    public boolean filterNamePriceLowToHighPresent() {
-        return optionPriceLowToHigh.isElementPresent();
+    public String isFilterNamePriceLowToHighPresent() {
+        return optionPriceLowToHigh.getText();
     }
 
-    public boolean filterNamePriceHighToLowPresent() {
-        return optionPriceHighToLow.isElementPresent();
+    public String isFilterNamePriceHighToLowPresent() {
+        return optionPriceHighToLow.getText();
     }
 
 }

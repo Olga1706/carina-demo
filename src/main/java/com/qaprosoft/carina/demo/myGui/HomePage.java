@@ -3,6 +3,7 @@ package com.qaprosoft.carina.demo.myGui;
 
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractPage;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -20,10 +21,6 @@ public class HomePage extends AbstractPage {
     @FindBy(id = "login-button")
     private ExtendedWebElement loginButton;
 
-    public HomePage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(className = "error-button")
     private ExtendedWebElement errorButton;
 
@@ -32,6 +29,10 @@ public class HomePage extends AbstractPage {
 
     @FindBy(xpath = "//*[@id='login_button_container']/div/form/div[3]/h3")
     private ExtendedWebElement errorMessage;
+
+    public HomePage(WebDriver driver) {
+        super(driver);
+    }
 
     public boolean isBotColumnPresent() {
         return bot.isElementPresent();
@@ -74,13 +75,10 @@ public class HomePage extends AbstractPage {
         passwordField.type(password);
     }
 
-    public int distanceFromTopToUserNameField() {
-        return userNameField.getLocation().getY();
-    }
-    public int distanceFromTopToPasswordField() {
-        return passwordField.getLocation().getY();
-    }
-    public int distanceFromTopToLoginBtn() {
-        return loginButton.getLocation().getY();
+    public boolean isCorrectLocationField() {
+        Point userNameFieldPoint = userNameField.getLocation();
+        Point passwordFieldPoint = passwordField.getLocation();
+        Point loginButtonPoint = loginButton.getLocation();
+        return userNameFieldPoint.getY() < passwordFieldPoint.getY() && passwordFieldPoint.getY() < loginButtonPoint.getY();
     }
 }

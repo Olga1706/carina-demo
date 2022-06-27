@@ -129,32 +129,30 @@ public class TestWeb implements IAbstractTest {
         InventoryPage inventoryPage = homePage.clickLoginBtn();
 
         SoftAssert softAssert = new SoftAssert();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is opened!");
+        Assert.assertFalse(homePage.isPageOpened(), "Home page is opened!");
         softAssert.assertTrue(inventoryPage.isImageItemPresent(), "There is no image");
         softAssert.assertTrue(inventoryPage.isInventoryItemDescPresent(), "Item description is not present");
         softAssert.assertTrue(inventoryPage.isAddToCartPresent(), "There is no 'Add to cart' btn");
-        softAssert.assertEquals(inventoryPage.inventoryItemName(), expectedItemName, "Wrong inventory item name");
-        softAssert.assertEquals(inventoryPage.inventoryItemPrice(), expectedPrice, "Incorrect inventory item price");
+        softAssert.assertEquals(inventoryPage.getInventoryItemName(), expectedItemName, "Wrong inventory item name");
+        softAssert.assertEquals(inventoryPage.getInventoryItemPrice(), expectedPrice, "Incorrect inventory item price");
         softAssert.assertAll();
-
     }
+
     @Test
-    @MethodOwner(owner = "olga")
-    public void testDropdownFilterMenu() {
+    public void testDropDownFilterMenu() {
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened!");
         homePage.typeUsername(userNameValid);
         homePage.typePassword(passwordValid);
-        inventoryPage = homePage.clickLoginBtn();
+        InventoryPage inventoryPage = homePage.clickLoginBtn();
 
-       /* Assert.assertTrue(inventoryPage.filterNameZToAPresent(), "(Z-A) filter isn`t present");
-        Assert.assertTrue(inventoryPage.filterNameAToZPresent(), "(A-Z) filter isn`t present");*/
-        Assert.assertTrue(inventoryPage.isPageOpened(), "Inventory/Products page is not opened!");
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(inventoryPage.filterNameAToZPresent(), "Filter 'Name (A to Z)' is not present");
-        softAssert.assertTrue(inventoryPage.filterNameZToAPresent(), "Filter 'Name (Z to A)' is not present");
-        softAssert.assertTrue(inventoryPage.filterNamePriceLowToHighPresent(), "Filter 'Price (low to high)' is not present");
-        softAssert.assertTrue(inventoryPage.filterNamePriceHighToLowPresent(), "Filter 'Price (high to low)' is not present");
+        Assert.assertTrue(inventoryPage.isPageOpened(), "Inventory/Products page is not opened!");
+        inventoryPage.clickOnDropdownMenu();
+        softAssert.assertEquals(inventoryPage.isFilterNameAToZPresent(), "Name (A to Z)", "Filter Name A to Z is Lost");
+        softAssert.assertEquals(inventoryPage.isFilterNameZToAPresent(), "Name (Z to A)", "Filter Name Z to A is Lost");
+        softAssert.assertEquals(inventoryPage.isFilterNamePriceLowToHighPresent(), "Price (low to high)", "Filter Price Low to High Lost");
+        softAssert.assertEquals(inventoryPage.isFilterNamePriceHighToLowPresent(), "Price (high to low)", "Filter Price High to Low Lost");
         softAssert.assertAll();
     }
 
@@ -168,10 +166,34 @@ public class TestWeb implements IAbstractTest {
         inventoryPage = homePage.clickLoginBtn();
 
         Assert.assertTrue(inventoryPage.isPageOpened(), "Inventory/Products page is not opened!");
-        Assert.assertEquals(inventoryPage.defaultDropdownName(), "NAME (A TO Z)", "Default dropdown name is incorrect");
-        inventoryPage.clickOnDropdown();
-        Assert.assertEquals(inventoryPage.selectOption(), "Price (low to high)", "Option doesn't selected");
+        Assert.assertEquals(inventoryPage.getActiveDropdownName(), "NAME (A TO Z)", "Default dropdown name is incorrect");
+        Assert.assertEquals(inventoryPage.getSelectOption(), "Price (low to high)", "Option doesn't selected");
     }
 
+    @Test
+    public void testLocationElements() {
+        homePage.open();
+        SoftAssert softAssert = new SoftAssert();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        softAssert.assertTrue(homePage.isCorrectLocationField(), "Location of field failed");
+        softAssert.assertAll();
+    }
 
+    @Test
+    public void testDropDownFilterMenu1() {
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened!");
+        homePage.typeUsername(userNameValid);
+        homePage.typePassword(passwordValid);
+        InventoryPage inventoryPage = homePage.clickLoginBtn();
+
+        SoftAssert softAssert = new SoftAssert();
+        Assert.assertTrue(inventoryPage.isPageOpened(), "Inventory/Products page is not opened!");
+
+        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Name (A to Z)"), "NAME (A TO Z)", "Filter Name A to Z is Lost");
+        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Name (Z to A)"), "[NAME (A TO Z)]", "Filter Name Z to A is Lost");
+        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Price (low to high)"), "Price (low to high)", "Filter Price Low to High Lost");
+        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Price (high to low)"), "Price (high to low)", "Filter Price High to Low Lost");
+        softAssert.assertAll();
+    }
 }
