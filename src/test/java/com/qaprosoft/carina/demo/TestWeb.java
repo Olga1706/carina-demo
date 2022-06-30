@@ -190,10 +190,10 @@ public class TestWeb implements IAbstractTest {
         SoftAssert softAssert = new SoftAssert();
         Assert.assertTrue(inventoryPage.isPageOpened(), "Inventory/Products page is not opened!");
 
-        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Name (A to Z)"), "NAME (A TO Z)", "Filter Name A to Z is Lost");
-        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Name (Z to A)"), "[NAME (A TO Z)]", "Filter Name Z to A is Lost");
-        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Price (low to high)"), "Price (low to high)", "Filter Price Low to High Lost");
-        softAssert.assertEquals(inventoryPage.isDropdownOptionByNamePresent("Price (high to low)"), "Price (high to low)", "Filter Price High to Low Lost");
+        softAssert.assertTrue(inventoryPage.isDropdownOptionByNamePresent("Name (A to Z)"), "Filter Name A to Z is Lost");
+        softAssert.assertTrue(inventoryPage.isDropdownOptionByNamePresent("Name (Z to A)"), "Filter Name Z to A is Lost");
+        softAssert.assertTrue(inventoryPage.isDropdownOptionByNamePresent("Price (low to high)"), "Filter Price Low to High Lost");
+        softAssert.assertTrue(inventoryPage.isDropdownOptionByNamePresent("Price (high to low)"), "Filter Price High to Low Lost");
         softAssert.assertAll();
     }
 }

@@ -17,6 +17,7 @@ package com.qaprosoft.carina.demo;
 
 import java.util.List;
 
+import com.qaprosoft.carina.demo.gui.pages.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
@@ -32,11 +33,6 @@ import com.qaprosoft.carina.demo.gui.components.FooterMenu;
 import com.qaprosoft.carina.demo.gui.components.NewsItem;
 import com.qaprosoft.carina.demo.gui.components.compare.ModelSpecs;
 import com.qaprosoft.carina.demo.gui.components.compare.ModelSpecs.SpecType;
-import com.qaprosoft.carina.demo.gui.pages.BrandModelsPage;
-import com.qaprosoft.carina.demo.gui.pages.CompareModelsPage;
-import com.qaprosoft.carina.demo.gui.pages.HomePage;
-import com.qaprosoft.carina.demo.gui.pages.ModelInfoPage;
-import com.qaprosoft.carina.demo.gui.pages.NewsPage;
 
 /**
  * This sample shows how create Web test.
@@ -116,6 +112,20 @@ public class WebSampleTest implements IAbstractTest {
                     "Invalid search results for " + n.readTitle());
         }
         softAssert.assertAll();
+    }
+
+    @Test()
+    @MethodOwner(owner = "ol")
+    @TestLabel(name = "feature", value = {"web", "acceptance"})
+    public void testTools() {
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened!");
+
+        ToolsPage toolsPage = homePage.getFooterMenu().openToolsPage();
+        Assert.assertTrue(toolsPage.isPageOpened(), "Tools page is not opened!");
+
+        Assert.assertEquals(toolsPage.readH3Compare(), "Compare");
     }
 
 }

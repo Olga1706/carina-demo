@@ -29,7 +29,7 @@ public class InventoryPage extends AbstractPage {
     private ExtendedWebElement dropDownOption;
 
 
-    @FindBy(xpath = "//*[@class=select_container]/option[text()='%s']")
+    @FindBy(xpath = "//*[@class='select_container']//option[text()='%s']")
     private ExtendedWebElement dropDownMenu;
     //select[@class='product_sort_container']
 
@@ -73,8 +73,8 @@ public class InventoryPage extends AbstractPage {
         return activeDropdown.getText();
     }
 
-   public String isDropdownOptionByNamePresent(String option) {
-        return dropDownMenu.format(option).getText();
+   public boolean isDropdownOptionByNamePresent(String option) {
+        return dropDownMenu.format(option).isElementPresent();
     }
 
     public InventoryPage clickOnDropdownMenu() {

@@ -34,6 +34,9 @@ public class ModelInfoPage extends AbstractPage {
     @FindBy(css = ".help-battery strong")
     private ExtendedWebElement batteryInfoLabel;
 
+    @FindBy(xpath = "//i[@class='head-icon icon-comment-count']")
+    private ExtendedWebElement opinionPage;
+
     public ModelInfoPage(WebDriver driver) {
         super(driver);
     }
@@ -57,4 +60,5 @@ public class ModelInfoPage extends AbstractPage {
         assertElementPresent(displayInfoLabel);
         return batteryInfoLabel.getText();
     }
+
 }

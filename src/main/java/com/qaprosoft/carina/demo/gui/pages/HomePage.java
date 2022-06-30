@@ -20,6 +20,8 @@ import java.util.List;
 
 import com.qaprosoft.carina.core.foundation.utils.Configuration;
 import com.qaprosoft.carina.core.foundation.utils.R;
+import com.qaprosoft.carina.demo.gui.components.PhoneFinderMenu;
+import com.qaprosoft.carina.demo.gui.components.TopMenu;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
@@ -37,11 +39,17 @@ public class HomePage extends AbstractPage {
     @FindBy(id = "footmenu")
     private FooterMenu footerMenu;
 
+    @FindBy(id = "header")
+    private TopMenu topMenu;
+
     @FindBy(xpath = "//div[contains(@class, 'brandmenu-v2')]//a")
     private List<ExtendedWebElement> brandLinks;
 
     @FindBy(className = "news-column-index")
     private ExtendedWebElement newsColumn;
+
+    @FindBy(xpath = "//div[contains(@class, 'brandmenu-v2')]")
+    private PhoneFinderMenu phoneFinderMenu;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -51,6 +59,13 @@ public class HomePage extends AbstractPage {
 
     public FooterMenu getFooterMenu() {
         return footerMenu;
+    }
+    public TopMenu getTopMenu() {
+        return topMenu;
+    }
+
+    public PhoneFinderMenu getPhoneFinderMenu(){
+        return phoneFinderMenu;
     }
 
     public BrandModelsPage selectBrand(String brand) {
